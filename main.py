@@ -3,6 +3,8 @@
 
 # a python version of the famous pong game
 # theSlyestGuy
+# Based on tutorial 
+# https://www.youtube.com/watch?v=C6jJg9Zan7w
 
 import turtle
 
@@ -37,6 +39,9 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
+# ball speed
+ball.dx = 0.05
+ball.dy = -0.05
 
 # Functions 
 def paddle_a_up():
@@ -49,13 +54,45 @@ def paddle_a_down():
     y -= 20
     paddle_a.sety(y)
 
+def paddle_b_up():
+    y = paddle_b.ycor()
+    y += 20
+    paddle_b.sety(y)
+
+def paddle_b_down():
+    y = paddle_b.ycor()
+    y -= 20
+    paddle_b.sety(y)
+
+
 # Keyboard bindings 
 wn.listen()
 wn.onkeypress(paddle_a_up, "w")
 wn.onkeypress(paddle_a_down, "s")
+wn.onkeypress(paddle_b_up, "Up")
+wn.onkeypress(paddle_b_down, "Down")
 
 # Main game loop
 while True:
     wn.update()
 
- 
+    # Move the ball
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    # Boarder checking
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball.dy *= -1
+    
+    if ball.ycor() < -290:
+        ball.sety(-290)
+        ball.dy *= -1
+
+    if ball.xcor() > 390:
+        ball.goto(0, 0)
+        ball.dx *= -1
+    
+    if ball.xcor() < -390:
+        ball.goto(0, 0)
+        ball.dx *= -1
