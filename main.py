@@ -6,9 +6,10 @@
 # Based on tutorial 
 # https://www.youtube.com/watch?v=C6jJg9Zan7w
 
-import turtle
-import winsound
 import os
+import turtle
+if os.name == "nt": # Windows
+    import winsound
 
 wn = turtle.Screen()
 wn.title("pyPong v1")
