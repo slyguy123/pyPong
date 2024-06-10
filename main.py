@@ -8,6 +8,7 @@
 
 import turtle
 import winsound
+import os
 
 wn = turtle.Screen()
 wn.title("pyPong v1")
@@ -78,6 +79,15 @@ def paddle_b_down():
     y -= 20
     paddle_b.sety(y)
 
+def sounds(filePath):
+    opsys = os.name
+    if opsys == "nt": # Windows
+        winsound.PlaySound(filePath, winsound.SND_ASYNC)
+    if opsys == "posix": # Linux
+        os.system("aplay {}&".format(filePath))
+    if opsys == "java": # Mac
+        os.system("afplay {}&".format(filePath))
+
 
 # Keyboard bindings 
 wn.listen()
@@ -98,12 +108,14 @@ while True:
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
-        winsound.PlaySound("sounds/hit.wav", winsound.SND_ASYNC)
+        #winsound.PlaySound("sounds/hit.wav", winsound.SND_ASYNC)
+        sounds("sounds/hit.wav")
     
     if ball.ycor() < -290:
         ball.sety(-290)
         ball.dy *= -1
-        winsound.PlaySound("sounds/hit.wav", winsound.SND_ASYNC)
+        #winsound.PlaySound("sounds/hit.wav", winsound.SND_ASYNC)
+        sounds("sounds/hit.wav")
 
 
     if ball.xcor() > 390:
@@ -112,7 +124,7 @@ while True:
         score_a += 1
         pen.clear()
         pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
-        winsound.PlaySound("sounds/game_over.wav", winsound.SND_ASYNC)
+        sounds("sounds/game_over.wav")
     
     if ball.xcor() < -390:
         ball.goto(0, 0)
@@ -120,16 +132,18 @@ while True:
         score_b += 1
         pen.clear()
         pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
-        winsound.PlaySound("sounds/game_over.wav", winsound.SND_ASYNC)
+        sounds("sounds/game_over.wav")
 
     # Paddle and ball collisions
     if (ball.xcor() > 340 and ball.xcor() < 350 ) and (ball.ycor() < paddle_b.ycor() + 40 and ball.ycor() > paddle_b.ycor() -40):
         ball.setx(340)
         ball.dx *= -1
-        winsound.PlaySound("sounds/kungfu_hit.wav", winsound.SND_ASYNC)
+        sounds("sounds/kungfu_hit.wav")
 
         
     if (ball.xcor() < -340 and ball.xcor() > -350 ) and (ball.ycor() < paddle_a.ycor() + 40 and ball.ycor() > paddle_a.ycor() -40):
         ball.setx(-340)
         ball.dx *= -1
-        winsound.PlaySound("sounds/kungfu_hit.wav", winsound.SND_ASYNC)
+        sounds("sounds/kungfu_hit.wav")
+
+    
