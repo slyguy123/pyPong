@@ -7,12 +7,17 @@
 # https://www.youtube.com/watch?v=C6jJg9Zan7w
 
 import turtle
+import winsound
 
 wn = turtle.Screen()
 wn.title("pyPong v1")
 wn.bgcolor("black")
 wn.setup(width=800, height=600)
 wn.tracer(0)
+
+# Score 
+score_a = 0
+score_b = 0
 
 # Paddle A
 paddle_a = turtle.Turtle()
@@ -50,7 +55,7 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 260)
-pen.write("Player A:0 PlayerB: 0", align="center", font=("Courier", 24, "normal"))
+pen.write("Player A: 0 Player B: 0", align="center", font=("Courier", 24, "normal"))
 
 # Functions 
 def paddle_a_up():
@@ -93,24 +98,38 @@ while True:
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
+        winsound.PlaySound("sounds/hit.wav", winsound.SND_ASYNC)
     
     if ball.ycor() < -290:
         ball.sety(-290)
         ball.dy *= -1
+        winsound.PlaySound("sounds/hit.wav", winsound.SND_ASYNC)
+
 
     if ball.xcor() > 390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_a += 1
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+        winsound.PlaySound("sounds/game_over.wav", winsound.SND_ASYNC)
     
     if ball.xcor() < -390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_b += 1
+        pen.clear()
+        pen.write("Player A: {} Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
+        winsound.PlaySound("sounds/game_over.wav", winsound.SND_ASYNC)
 
     # Paddle and ball collisions
     if (ball.xcor() > 340 and ball.xcor() < 350 ) and (ball.ycor() < paddle_b.ycor() + 40 and ball.ycor() > paddle_b.ycor() -40):
         ball.setx(340)
         ball.dx *= -1
+        winsound.PlaySound("sounds/kungfu_hit.wav", winsound.SND_ASYNC)
+
         
     if (ball.xcor() < -340 and ball.xcor() > -350 ) and (ball.ycor() < paddle_a.ycor() + 40 and ball.ycor() > paddle_a.ycor() -40):
         ball.setx(-340)
         ball.dx *= -1
+        winsound.PlaySound("sounds/kungfu_hit.wav", winsound.SND_ASYNC)
